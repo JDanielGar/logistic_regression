@@ -1,62 +1,55 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Oct 29 17:22:47 2017
+
+@author: Daniel
+"""
 #%%
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 from sklearn.utils import shuffle
+
 #%%
-df = pd.read_csv("data2.csv")
+df = pd.read_csv('dog.csv')
 data = df.as_matrix()
 
-#%%
-
-D = 4;
-N = 100;
-
-#%%
-
-# Data Preprocessing
-
-# Normalize Data.
-
-data[:, 0] = (data[:, 0] - data[:, 0].mean()) / data[:, 0].std()
-data[:, 1] = (data[:, 1] - data[:, 1].mean()) / data[:, 1].std()
-data[:, 2] = (data[:, 2] - data[:, 2].mean()) / data[:, 2].std()
-
-
-
-data[data == 'Iris-setosa'] = 0;
-data[data == 'Iris-versicolor'] = 1;
+#%% 
+# Set X and Y
 
 X = data[:, :-1].astype(float)
-Y = data[:, -1:].astype(float)
+Y = data[:, -1:]
+
+# Normalize the data
+X[:, 0] = (X[:, 0] - X[:, 0].mean()) / X[:, 0].std()
+X[:, 1] = (X[:, 1] - X[:, 1].mean()) / X[:, 1].std()
+X[:, 2] = (X[:, 2] - X[:, 2].mean()) / X[:, 2].std()
+
+# Dimensions of Array
+
+N, D = X.shape
 
 X, Y = shuffle(X, Y)
-W = np.random.randn(D, 1);
+
+# Initialize Weights and Bias Term.
+
+W = np.random.rand(D, 1)
 b = 0
 
 #%%
 
 def sigmoid(X):
     return 1 / (1 + np.exp(-X))
-
-#%%
-    
+ 
 def forward(X, W, b):
-    z = sigmoid(X.dot(W) + b);
-    print(z)
-    return z;
-
-def predict(X, W, b):
-    forward(X, W, b)
-
+    return sigmoid(X.dot(W) + b)
 
 #%%
     
-Xtrain = X[:-70]
-Ytrain = Y[:-70]
+Xtrain = X[:6, :]
+Ytrain = Y[:6, :]
 
-Xtest = X[-40:]
-Ytest = Y[-40:]
+Xtest = X[-3:]
+Ytest = Y[-3:]
 
 #%%
 
@@ -77,7 +70,7 @@ learning_rate = .001
 #%%
 
 
-for i in range(200):
+for i in range(10000):
     pYtrain = forward(Xtrain, W, b)
     pYtest = forward(Xtest, W, b)
     
@@ -100,4 +93,13 @@ print("Final test classification rate", classification_rate(Ytest, np.round(pYte
 
 #%%
 
-prediction = X[0, :];
+def predict(X, W, b):
+    print(forward(X, W, b))
+    
+test = np.array([0, 0, 1, 0])
+
+#%%
+
+predict(test, W, b)
+
+#
