@@ -1,0 +1,107 @@
+# coding: utf-8
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+reset out
+reset dhist
+%xdel
+clear
+%loggon
+%logof
+%logoff
+%logon
+import matplotlib as plt
+def cross_entropy(t, y): # Targets and predictions
+    return t * np.log(y) + (1-t) * np.log(1-y)
+def forward(y): # Do the predictions with target
+    return 1/(1+np.exp(-x))
+def sigmoid(x): # Sigmoid function to give a importance to the data
+    return 1/(1+np.exp(-x))
+def forward(w, x, b): # Do the prediction
+    np.sum(w.dot(x)) + b
+    
+def forward(w, x, b): # Do the prediction
+    sigmoid(w.dot(x)) + b
+    
+    
+import pandas as pd
+%ls
+data = pd.read_excel('data.xlsx')
+data = data.as_matrix()
+data
+data[0][1]
+data[0:1]
+data[:1]
+data[:, :]
+data[number:, :]
+data[0:, :]
+data[1:, :]
+data[2:, :]
+data[:0, :]
+data[:1, :]
+# data[arriba:abajo, :] data[quitar, poner]
+# data[arriba:abajo, :] data[quitar filas, quitar columnas]
+data[:0, :0]
+data[:0, :1]
+data[:1, :1]
+data[:1, :1] = 'Tu madre'
+data[:1, :1] = 'Tu madre'
+data[:1, :1]
+data
+data[:1, :1]
+data[:2, :]
+N, D = data.shape()
+N, D = data.shape
+N
+D
+data[:N, ]
+data[:, :1]
+data[:, :2]
+data[:, 2]
+data[:, 2] = 'colonial' if data[:, 2] == 1
+data[:, 2] = 'colonial' if (data[:, 2] == 1)
+data[:, 2] = 'colonial' if 1 
+data[:, 2] = if 1 == 'colonial'  
+data
+data[0, :]
+data[:, 2]
+data[:, 2]
+for vc in range(0, 5):
+    condition = data[:, 2] == 0
+    data[:, 2][condition] = 'Sin Mangas'
+    
+data
+%save -r session_1 ~0/
