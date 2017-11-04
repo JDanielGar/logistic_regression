@@ -29,7 +29,7 @@ data_likes[:, 2][data_likes[:, 2] == 2] = 'V-Neck'
 
 # Here come the LIKES
 
-# likes = np.zeros([D, 1])
+#likes = np.zeros([N, 1])
 likes = np.array([1, 1, 0, 1, 0, 0, 0, 0, 0])
 
 # likes = []
@@ -40,7 +40,7 @@ def getLikes():
         print("Nombre de prenda", data_likes[samples, 0], "\n Caracteristicas: \n  1)Manga:", data_likes[samples, 1])
         print("  2)Cuello:", data_likes[samples, 2], "\n  3)Bolsillos:", data_likes[samples, 3], "\n  4)Botones:", data_likes[samples, 4])
         print("  5)Imagen:", data_likes[samples, 5])
-        likes[samples, :] = int(input("¿Te gusta?. Si(1) | No(2) -> "))
+        likes[samples, :] = int(input("¿Te gusta?. Si(1) | No(0) -> "))
 
 # Here Come the predictions
 
@@ -48,23 +48,28 @@ data_matrix = data.as_matrix()[:, 1:]
 
 # 1) Normalize Columns
 
+
 data_matrix[:, 0] = (data_matrix[:, 0] - data_matrix[:, 0].mean()) / data_matrix[:, 0].std()
 data_matrix[:, 1] = (data_matrix[:, 1] - data_matrix[:, 1].mean()) / data_matrix[:, 1].std()
 
 # 2) Stardard Varibles
 
-X = data_matrix.astype(float)
-Y = likes.astype(float)
-W = np.random.rand(D-1, 1)
-b = 0
+def getStandardVariables():
+    global X, Y, W, b
+    X = data_matrix.astype(float)
+    Y = likes.astype(float)
+    W = np.random.rand(D-1, 1)
+    b = 0
 
 # 3) Define Train and Test
 
-Xtrain = X[:6, :]
-Ytrain = Y[:6]
+def getForwardVariables():
+    global Xtrain, Ytrain, Xtest, Ytest
+    Xtrain = X[:6, :]
+    Ytrain = Y[:6]
 
-Xtest = X[-3:, :]
-Ytest = Y[-3]
+    Xtest = X[-3:, :]
+    Ytest = Y[-3:]
 
 # 4) Define forward functions
 
