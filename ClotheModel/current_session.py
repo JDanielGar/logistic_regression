@@ -29,8 +29,8 @@ data_likes[:, 2][data_likes[:, 2] == 2] = 'V-Neck'
 
 # Here come the LIKES
 
-#likes = np.zeros([N, 1])
-likes = np.array([1, 1, 0, 1, 0, 0, 0, 0, 0])
+likes = np.zeros([N, 1]).T
+# likes = np.array([1, 1, 0, 1, 0, 0, 0, 0, 0])
 
 # likes = []
 
@@ -40,7 +40,7 @@ def getLikes():
         print("Nombre de prenda", data_likes[samples, 0], "\n Caracteristicas: \n  1)Manga:", data_likes[samples, 1])
         print("  2)Cuello:", data_likes[samples, 2], "\n  3)Bolsillos:", data_likes[samples, 3], "\n  4)Botones:", data_likes[samples, 4])
         print("  5)Imagen:", data_likes[samples, 5])
-        likes[samples, :] = int(input("¿Te gusta?. Si(1) | No(0) -> "))
+        likes[:, samples] = int(input("¿Te gusta?. Si(1) | No(0) -> "))
 
 # Here Come the predictions
 
@@ -58,7 +58,7 @@ def getStandardVariables():
     global X, Y, W, b
     X = data_matrix.astype(float)
     Y = likes.astype(float)
-    W = np.random.rand(D-1, 1)
+    W = np.random.rand(D-1, 1).T
     b = 0
 
 # 3) Define Train and Test
@@ -95,7 +95,6 @@ def predict_weight(w, x, b, learn_rate = 0.01, iterations=1000):
         train_costs.append(ctrain)
         test_costs.append(ctest)
         
-        pYtrain = pYtrain.T
         print(pYtrain)
         print(Ytrain)
         print(pYtrain - Ytrain)
@@ -123,3 +122,5 @@ def gradientDescent(Xtrain, Ytrain, pYtrain, learn_rate):
 
 def cross_entropy(t, y): # Targets and predictions
     return t * np.log(y) + (1-t) * np.log(1-y)
+
+
