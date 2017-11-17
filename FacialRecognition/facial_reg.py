@@ -1,40 +1,67 @@
 # coding: utf-8
 
 import numpy as np
-import pandas as pd
-import matplotlib.pyplot as pyplot
+import matplotlib.pyplot as plt
 from sklearn.linear_model import LogisticRegression
+from sklearn.utils import shuffle
 
-# def getData(balance_ones=True):
-#     # images are 48x48 = 2304 size vectors
-#     Y = []
-#     X = []
-#     first = True
-#     for line in open('fer2013.csv'):
-#         if first:
-#             first = False
-#         else:
-#             row = line.split(',')
-#             Y.append(int(row[0]))
-#             X.append([int(p) for p in row[1].split()])
+# An array in Machine Learning have the form [S, D] 
+# An array in Algebra have the form [i, j]
 
-#     X, Y = np.array(X) / 255.0, np.array(Y)
+# Data Preprocessing 
 
-#     if balance_ones:
-#         # balance the 1 class
-#         X0, Y0 = X[Y!=1, :], Y[Y!=1]
-#         X1 = X[Y==1, :]
-#         X1 = np.repeat(X1, 9, axis=0)
-#         X = np.vstack([X0, X1])
-#         Y = np.concatenate((Y0, [1]*len(X1)))
+def GetData():
+    X = []
+    Y = []
+    first = True
+    for line in open('fer2013.csv'):
+        if(first):
+            first = False
+        else:  
+            inner_data = line.split(',')
+            X.append([int(x) for x in inner_data[1].split()])
+            Y.append(int(inner_data[0]))
+    return np.array(X)/255, np.array(Y)
 
-#     return X, Y
 
-# X, Y = getData(False)
 
-data = pd.read_csv('fer2013.csv')
-data = data.as_matrix()
-data = [data[:, -1:] == 1 or data[:, -1:] == 0]
-x = np.array([int(x) for x in data[0, :-1][1].split(' ')])/255.0
-y = np.array(data[:, 0])
+label_map = ['Anger', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
+def ShowImage(X, number):
+    plt.imshow(X[number].reshape(48, 48), cmap='gray')
+    plt.title(label_map[Y[number]])
+    plt.show()
 
+def FilterData(X, Y):
+    x = []
+    y = []
+    for data in range(len(Y)):
+        if(Y[data] == 0 or Y[data] ==1):
+            x.append(X[data])
+            y.append(Y[data])
+    return np.array(x), np.array(y)
+
+X, Y = FilterData(GetData()[0], GetData()[1])
+
+# Data split into Training and Test sets.
+
+# Train -> 4125.0 Samples
+
+Xtrain = X[:4125, :]
+Ytrain = Y[:4125]
+
+# Test
+
+Xtest = X[1375:, :]
+Ytest = Y[1375:]
+
+# Machine Learning
+
+def sigmoid(x):
+    return 1/(1+np.exp(-x))
+
+def forward(w, x, b):
+    return sigmoid(W.dot(X) + b)
+
+
+# model = LogisticRegression()
+# model.fit(Xtrain, Ytrain)
