@@ -12,6 +12,6 @@ def ProcessImage(image_dir):
 def ShowImage(data, title):
     label_map = ['Happy', 'Sad']
     plt.imshow(data.reshape(48, 48), cmap='gray')
-    plt.title(label_map[1])
+    plt.title(label_map[int(title)])
     plt.show()
     return print('(+) Successfully printed image.')
