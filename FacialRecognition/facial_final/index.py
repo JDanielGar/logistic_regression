@@ -1,14 +1,15 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.utils import shuffle
-from util import getBinaryData, sigmoid, sigmoid_cost, error_rate
+from util import sigmoid, sigmoid_cost, error_rate
+from preprocessing_images.img_processing import ProcessImage, ShowImage
 
 
 class LogisticModel(object):
     def __init__(self):
         pass
 
-    def fit(self, X, Y, learning_rate=10e-7, reg=0 * 10e-22, epochs=50000, show_fig=False):
+    def fit(self, X, Y, learning_rate=10e-7, reg=0 * 10e-22, epochs=10000, show_fig=False):
         X, Y = shuffle(X, Y)
         Xvalid, Yvalid = X[-1000:], Y[-1000:]
         X, Y = X[:-1000], Y[:-1000]
@@ -19,6 +20,9 @@ class LogisticModel(object):
 
         costs = []
         best_validation_error = 1
+
+        self.X = X
+        self.Y = Y
         for i in range(epochs):
                 # forward propagation and cost calculation
                 pY = self.forward(X)
@@ -52,11 +56,36 @@ class LogisticModel(object):
         prediction = self.predict(X)
         return 1 - error_rate(Y, prediction)
 
+def getBinaryData():
+    Y = []
+    X = []
+    first = True
+    for line in open('fer2013.csv'):
+        if first:
+            first = False
+        else:   
+            row = line.split(',')
+            y = int(row[0])
+            if y == 3 or y == 4:
+                Y.append(y)
+                X.append([int(p) for p in row[1].split()])
+    return np.array(X) / 255.0, np.array(Y)
+
 X, Y = getBinaryData()
 
-X0 = X[Y == 0, :]
-X1 = X[Y == 1, :]
-X1 = np.repeat(X1, 9, axis=0)
+# Process Data
+
+X0 = X[Y == 3, :]
+X1 = X[Y == 4, :]
+Y[Y==3] = 0 # Happy
+Y[Y==4] = 1 # Sad
+
+# Class Imbalance
+
+# X1 = X1[:, :8989]
+
+# Concatenate
+
 X = np.vstack([X0, X1])
 Y = np.array([0] * len(X0) + [1] * len(X1))
 
@@ -67,5 +96,6 @@ Y = np.array([0] * len(X0) + [1] * len(X1))
 model = LogisticModel()
 model.fit(X, Y, show_fig=True)
 model.score(X, Y)
+
 # scores = cross_val_score(model, X, Y, cv=5)
 # print "score mean:", np.mean(scores), "stdev:", np.std(scores)
